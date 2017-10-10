@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>converter</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<header>
+		<h1>Convertisseur de chiffre arabe en chiffre romain</h1>
+	</header>
+
+	<div class="container">
+		<p>entrez un chiffre arabe entre 1 et 100</p>
+		<form>
+			<input id="number" type="text" name="number" placeholder="Entrez votre chiffre">
+			<button type="submit">Envoyer</button>
+		</form>
+		<div id="test"></div>
+		<div id="result"></div>
+	</div>
+</body>
+</html>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+$("form").submit(function(e) {
+	var numb = $("#number").val();
+
+	if (isNaN(numb) || numb > 100 || numb < 1) {
+		alert('attention il faut un chiffre compris entre 1 et 100');
+	} else {
+	   $('#test').html('<p>La valeur en chiffre arabe est : '+numb+'</p>');
+	/* methode sans SSE
+	      $.ajax({
+          type: "POST",
+          url: '/',
+          data: $("form").serialize(), 
+          success: function(data) {
+            $('#result').html('<p>La valeur en chiffre romain est : '+data+'</p>');
+          }
+        });*/
+  		sendNumb(numb);
+    	e.preventDefault();
+    	$("form")[0].reset();
+
+	}
+});
+
+function sendNumb(val) {
+    $.get("/?val=" + val, function() {
+        console.log('ok ça passe');
+    })
+}
+
+var es = new EventSource('/event');
+//récupération de l'évenement serveur
+es.addEventListener('number', function (event) {
+	$('#result').html('<p>La valeur en chiffre romain est : '+event.data+'</p>');
+});
+
+</script>
