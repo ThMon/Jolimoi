@@ -19,8 +19,6 @@ app.get('/', (req, res) => {
 	if(req.query.val) {
 		var roman = method.AtoR(req.query.val);
 		push('number', roman);
-		console.log('ici');
-		console.log('la');
 	}
 	res.render('index');
 });
